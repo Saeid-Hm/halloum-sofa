@@ -625,7 +625,7 @@ onSnapshot(query(collection(db,'products'), where('published','==',true)), snap=
     if(nw.length) showNewAlert(nw);
   }
   S.products=list; renderProducts();
-}, err=>console.error(err));
+}, err=>{ console.error(err); toast('⚠️ تعذّر تحميل المنتجات'); });
 
 applyLang();
 </script>
