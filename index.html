@@ -20,7 +20,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--ink);padding-botto
 img{max-width:100%;display:block}
 .wrap{width:min(1120px,92%);margin-inline:auto}
 .hidden{display:none!important}
-.topbar{position:sticky;top:0;z-index:50;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.07);position:sticky}
+.topbar{position:sticky;top:0;z-index:50;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.07)}
 .bar{display:flex;align-items:center;gap:12px;height:64px;position:relative}
 .icon-btn{background:none;border:0;cursor:pointer;width:40px;height:40px;border-radius:10px;display:grid;place-items:center;color:var(--ink);transition:.25s}
 .icon-btn:hover{background:var(--tint);color:var(--pri)}
@@ -44,7 +44,6 @@ img{max-width:100%;display:block}
 .searchbar input{width:100%;padding:11px 18px;border-radius:999px;border:1.5px solid #e2ddd2;font-family:var(--font);font-size:14px;outline:none;transition:.25s}
 .searchbar input:focus{border-color:var(--pri);box-shadow:0 0 0 4px var(--tint)}
 @media(min-width:900px){.topnav{display:flex}#menuBtn{display:none}}
-/* شريط الإعلانات */
 .adbar{position:sticky;top:64px;z-index:44;background:linear-gradient(90deg,var(--pri),var(--prd));color:#fff;overflow:hidden;height:38px;display:flex;align-items:center}
 .adbar .adtxt{white-space:nowrap;font-size:13px;font-weight:700;cursor:pointer;padding-inline:12px;animation:adfade .6s ease}
 @keyframes adfade{from{opacity:0;transform:translateY(8px)}}
@@ -131,7 +130,7 @@ img{max-width:100%;display:block}
 .bottomnav a.active{color:#fff}
 .bottomnav a.active::before{content:'';position:absolute;top:0;width:28px;height:3px;border-radius:0 0 6px 6px;background:var(--acl)}
 @media(min-width:900px){.bottomnav{display:none}}
-.newpill{position:fixed;bottom:86px;inset-inline-start:14px;z-index:70;background:linear-gradient(135deg,var(--acl),var(--pri));color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:700;font-family:var(--font);font-size:14px;box-shadow:0 10px 26px rgba(0,0,0,.28);display:flex;gap:8px;align-items:center;animation:slidein .5s}
+.newpill{position:fixed;bottom:86px;inset-inline-start:14px;z-index:70;background:linear-gradient(135deg,var(--acl),var(--pri));color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:700;font-family:var(--font);font-size:14px;box-shadow:0 10px 26px rgba(0,0,0,.28);display:flex;gap:8px;align-items:center;animation:slidein .5s;cursor:pointer}
 @keyframes slidein{from{transform:translateY(24px);opacity:0}}
 @media(min-width:900px){.newpill{bottom:30px}}
 .modal{position:fixed;inset:0;z-index:100;display:none}
@@ -286,9 +285,6 @@ img{max-width:100%;display:block}
 <div id="toast"></div>
 
 <script type="module">
-/* ============================================================
-   ⚙️ إعدادات Firebase — مشروع halloum-sofa
-============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyD5azqrR9Pq2Ak-03zLQCnsie3QmytHoC0",
   authDomain: "halloum-sofa.firebaseapp.com",
@@ -345,7 +341,6 @@ function applyLang(){
 }
 $('#langBtn').onclick = () => { LANG = LANG==='ar' ? 'en' : 'ar'; localStorage.setItem('lang',LANG); applyLang(); applySettings(); renderProducts(); };
 
-/* ---------- الإعدادات ---------- */
 let slideTimer=null, slideIdx=0;
 function applySettings(){
   const st = S.settings, f = features();
@@ -399,7 +394,6 @@ function buildContact(c){
   mb.innerHTML = src.startsWith('http') ? `<iframe src="${esc(src)}" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>` : `<div class="ph">${t('visit')}</div>`;
 }
 
-/* ---------- شريط الإعلانات ---------- */
 function startAdBar(){
   clearInterval(adTimer);
   const bar=$('#adBar');
@@ -416,7 +410,6 @@ function showAd(){
   el.style.cursor = a.link ? 'pointer' : 'default';
 }
 
-/* ---------- الصور ---------- */
 async function getMedia(pid){
   if(mediaCache[pid]) return mediaCache[pid];
   const snap = await getDocs(query(collection(db,'media'), where('productId','==',pid)));
@@ -427,7 +420,6 @@ onSnapshot(query(collection(db,'media'), where('productId','==','hero')), snap=>
   buildSlider(snap.docs.map(d=>d.data()).sort((a,b)=>(a.order||0)-(b.order||0)).map(x=>x.dataUrl));
 }, err=>console.error(err));
 
-/* ---------- الإعجابات ---------- */
 async function doLike(id, btnEl){
   if(!features().likes) return;
   if(localStorage.getItem('liked_'+id)){ toast(t('likedBefore')); return; }
@@ -450,13 +442,11 @@ onSnapshot(collection(db,'likes'), snap=>{
   }
 }, err=>console.error(err));
 
-/* ---------- الإعلانات ---------- */
 onSnapshot(query(collection(db,'ads'), where('active','==',true)), snap=>{
   S.ads = snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.order||0)-(b.order||0));
   startAdBar();
 }, err=>console.error(err));
 
-/* ---------- المنتجات ---------- */
 function renderProducts(){
   const f=features();
   const cats=[...new Set(S.products.map(p=>pick(p,'catAr','catEn')).filter(Boolean))];
@@ -495,7 +485,6 @@ function renderProducts(){
 const revObs=new IntersectionObserver(es=>es.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); revObs.unobserve(en.target);} }),{threshold:.12});
 function observeReveals(){ $$('.reveal:not(.in)').forEach(el=>revObs.observe(el)); }
 
-/* ---------- تنبيه المنشورات الجديدة ---------- */
 function showNewAlert(nw){
   S.newIds=nw.map(p=>p.id);
   const badge=$('#bellBadge'); badge.textContent=nw.length; badge.classList.remove('hidden');
@@ -524,7 +513,6 @@ $('#bellBtn').onclick=()=>{
 };
 document.addEventListener('click',e=>{ if(!e.target.closest('#bellBtn') && !e.target.closest('#bellPanel')) $('#bellPanel').classList.add('hidden'); });
 
-/* ---------- التفاصيل ---------- */
 async function openModal(id){
   const p=S.products.find(x=>x.id===id); if(!p) return; S.current=p;
   $('#mTitle').textContent=pick(p,'titleAr','titleEn');
@@ -558,7 +546,6 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
 $('#mLike').onclick=()=>{ if(S.current) doLike(S.current.id,$('#mLike')); };
 $('#mPdf').onclick=async()=>{ const p=S.current; if(!p) return; p._gal = p._gal || await getMedia(p.id); makePdf(p); };
 
-/* ---------- PDF ---------- */
 let pdfLibs=null;
 function loadScript(src){ return new Promise((res,rej)=>{ const s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); }); }
 async function ensurePdfLibs(){ if(pdfLibs) return; await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'); await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'); pdfLibs=true; }
@@ -602,7 +589,6 @@ async function makePdf(p){
   }catch(err){ console.error(err); toast(t('err')); }
 }
 
-/* ---------- تفاعلات ---------- */
 $('#searchBtn').onclick=()=>{ const b=$('#searchBar'); b.classList.toggle('hidden'); if(!b.classList.contains('hidden')) $('#searchInput').focus(); };
 $('#searchInput').oninput=e=>{ S.search=e.target.value; renderProducts(); };
 $('#menuBtn').onclick=()=>$('#topnav').classList.toggle('open');
@@ -613,7 +599,6 @@ const secObs=new IntersectionObserver(es=>es.forEach(en=>{
 }),{threshold:.35});
 ['home','browse','about','contact'].forEach(id=>{ const el=document.getElementById(id); if(el) secObs.observe(el); });
 
-/* ---------- الاستماع اللحظي ---------- */
 $('#grid').innerHTML = Array(4).fill('<div class="skel reveal in"><div class="i"></div><div class="b"></div></div>').join('');
 onSnapshot(doc(db,'settings','site'), snap=>{
   S.settings = snap.exists() ? {...DEF, ...snap.data(), contact:{...DEF.contact,...(snap.data().contact||{})}, layout:{...DEF.layout,...(snap.data().layout||{})}, features:{...DEF.features,...(snap.data().features||{})}} : {...DEF};
