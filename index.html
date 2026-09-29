@@ -295,9 +295,12 @@ const firebaseConfig = {
 };
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
+const auth = getAuth(app);
+onAuthStateChanged(auth, u => { if(!u) signInAnonymously(auth).catch(console.error); });
 
 const $  = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -423,11 +426,19 @@ onSnapshot(query(collection(db,'media'), where('productId','==','hero')), snap=>
 async function doLike(id, btnEl){
   if(!features().likes) return;
   if(localStorage.getItem('liked_'+id)){ toast(t('likedBefore')); return; }
-  const uid=deviceUid(), ref=doc(db,'likes',id);
+  const uid = auth.currentUser?.uid;
+  if(!uid){ toast(t('likeFail')); return; }
+  const ref = doc(db,'likes',id);
   try{
-    const s=await getDoc(ref);
-    if(s.exists()) await updateDoc(ref,{count:(s.data().count||0)+1, ['voters.'+uid]:true});
-    else await setDoc(ref,{count:1,voters:{[uid]:true}});
+    const s = await getDoc(ref);
+    if(s.exists()){
+      if(s.data().voters && s.data().voters[uid]){
+        localStorage.setItem('liked_'+id,'1'); toast(t('likedBefore')); return;
+      }
+      await updateDoc(ref,{count:(s.data().count||0)+1, ['voters.'+uid]:true});
+    } else {
+      await setDoc(ref,{count:1,voters:{[uid]:true}});
+    }
     localStorage.setItem('liked_'+id,'1');
     vibrate(40);
     if(btnEl){ btnEl.classList.add('pop','liked'); setTimeout(()=>btnEl.classList.remove('pop'),500); }
