@@ -297,11 +297,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/fireba
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-const app = initializeApp(firebaseConfig);
-const db  = getFirestore(app);
+/* 🔑 تطبيق مسمّى: جلسة زوار مستقلة تماماً عن جلسة الإدارة على نفس النطاق */
+const app  = initializeApp(firebaseConfig, 'hyber-public');
+const db   = getFirestore(app);
 const auth = getAuth(app);
 
-/* ---------- دخول مجهول تلقائي (ليعمل الإعجاب مع القواعد الصارمة) ---------- */
+/* دخول مجهول تلقائي بصمةً للإعجابات (مطابق لقواعد likes) */
 let authUid = null, authPromise = null;
 function ensureAuth(){
   if(!authPromise){
@@ -437,7 +438,6 @@ onSnapshot(query(collection(db,'media'), where('productId','==','hero')), snap=>
   buildSlider(snap.docs.map(d=>d.data()).sort((a,b)=>(a.order||0)-(b.order||0)).map(x=>x.dataUrl));
 }, err=>console.error(err));
 
-/* ---------- الإعجابات: بصمة الزائر = UID مجهول من Firebase (مطابق لقواعدك) ---------- */
 async function doLike(id, btnEl){
   if(!features().likes) return;
   if(localStorage.getItem('liked_'+id)){ toast(t('likedBefore')); return; }
