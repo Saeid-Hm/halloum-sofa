@@ -44,10 +44,34 @@ img{max-width:100%;display:block}
 .searchbar input{width:100%;padding:11px 18px;border-radius:999px;border:1.5px solid #e2ddd2;font-family:var(--font);font-size:14px;outline:none;transition:.25s}
 .searchbar input:focus{border-color:var(--pri);box-shadow:0 0 0 4px var(--tint)}
 @media(min-width:900px){.topnav{display:flex}#menuBtn{display:none}}
-.adbar{position:sticky;top:64px;z-index:44;background:linear-gradient(90deg,var(--pri),var(--prd));color:#fff;overflow:hidden;height:38px;display:flex;align-items:center}
-.adbar .adtxt{white-space:nowrap;font-size:13px;font-weight:700;cursor:pointer;padding-inline:12px;animation:adfade .6s ease}
-@keyframes adfade{from{opacity:0;transform:translateY(8px)}}
-.adbar .adwrap{overflow:hidden;flex:1;display:flex;justify-content:center}
+/* ===== بطاقة الإعلانات التفاعلية ===== */
+.adwrap{position:sticky;top:64px;z-index:44;padding-top:10px}
+.adcard{position:relative;overflow:hidden;width:min(1120px,94%);margin:0 auto;border-radius:18px;background:linear-gradient(120deg,var(--pri),var(--prd) 55%,var(--pri));color:#fff;display:flex;align-items:center;gap:12px;padding:14px 16px;box-shadow:0 12px 30px rgba(0,0,0,.22);cursor:pointer;animation:adin .5s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes adin{from{opacity:0;transform:translateY(-16px) scale(.97)}}
+.adglow{position:absolute;inset:0;background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.18) 45%,transparent 60%);transform:translateX(-100%);animation:shine 3.8s ease-in-out infinite;pointer-events:none}
+@keyframes shine{0%{transform:translateX(-100%)}55%{transform:translateX(100%)}100%{transform:translateX(100%)}}
+.adclose{position:absolute;top:8px;inset-inline-end:8px;width:26px;height:26px;border:0;border-radius:50%;background:rgba(0,0,0,.28);color:#fff;cursor:pointer;font-size:12px;line-height:1;display:grid;place-items:center;transition:.2s;z-index:2}
+.adclose:hover{background:rgba(0,0,0,.5);transform:rotate(90deg)}
+.adicon{font-size:30px;flex:none;animation:adpop 1.8s ease-in-out infinite;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}
+@keyframes adpop{0%,100%{transform:scale(1) rotate(-6deg)}50%{transform:scale(1.15) rotate(6deg)}}
+.adbody{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.adtext{font-weight:800;font-size:15px;line-height:1.6;text-shadow:0 2px 8px rgba(0,0,0,.3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adtext.swap{animation:adswap .45s ease}
+@keyframes adswap{from{opacity:0;transform:translateY(10px)}}
+.admeta{display:flex;align-items:center;gap:10px}
+.addots{display:flex;gap:5px}
+.addots button{width:7px;height:7px;border-radius:50%;border:0;padding:0;background:#ffffff55;cursor:pointer;transition:.3s}
+.addots button.on{background:var(--acl);width:20px;border-radius:99px}
+.adcta{border:0;background:#fff;color:var(--prd);font-family:var(--font);font-weight:800;font-size:12px;padding:7px 16px;border-radius:999px;cursor:pointer;transition:.2s;box-shadow:0 4px 12px rgba(0,0,0,.25)}
+.adcta:hover{transform:scale(1.06)}
+.adprog{position:absolute;bottom:0;inset-inline:0;height:3px;background:rgba(255,255,255,.18)}
+.adprog i{display:block;height:100%;width:0;background:var(--acl);animation:adprog 6s linear forwards}
+@keyframes adprog{from{width:0}to{width:100%}}
+.adcard.paused .adprog i,.adcard.paused .adglow,.adcard.paused .adicon{animation-play-state:paused}
+.adreopen{position:fixed;bottom:86px;inset-inline-end:14px;z-index:70;width:52px;height:52px;border:0;border-radius:50%;background:linear-gradient(135deg,var(--acl),var(--pri));color:#fff;font-size:22px;cursor:pointer;box-shadow:0 10px 26px rgba(0,0,0,.3);animation:ring 2s infinite}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5),0 10px 26px rgba(0,0,0,.3)}70%{box-shadow:0 0 0 14px rgba(255,255,255,0),0 10px 26px rgba(0,0,0,.3)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0),0 10px 26px rgba(0,0,0,.3)}}
+@media(min-width:900px){.adreopen{bottom:30px}}
+@media(max-width:560px){.adtext{font-size:13px}.adicon{font-size:26px}}
 .hero{position:relative;height:min(66vh,560px);min-height:400px;overflow:hidden;background:var(--prd)}
 .hs{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;background-size:cover;background-position:center}
 .hs.on{opacity:1}
@@ -198,7 +222,23 @@ img{max-width:100%;display:block}
   <div id="searchBar" class="searchbar hidden"><input id="searchInput" type="search" placeholder="ابحث عن منتج..."></div>
 </header>
 
-<div id="adBar" class="adbar hidden"><div class="adwrap"><span id="adTxt" class="adtxt"></span></div></div>
+<!-- بطاقة الإعلانات التفاعلية -->
+<div id="adWrap" class="adwrap hidden">
+  <div class="adcard" id="adCard">
+    <div class="adglow"></div>
+    <button class="adclose" id="adClose" aria-label="إغلاق الإعلان">✕</button>
+    <div class="adicon">📢</div>
+    <div class="adbody">
+      <div class="adtext" id="adTxt"></div>
+      <div class="admeta">
+        <div class="addots" id="adDots"></div>
+        <button class="adcta hidden" id="adCta">التفاصيل</button>
+      </div>
+    </div>
+    <div class="adprog"><i id="adProgI"></i></div>
+  </div>
+</div>
+<button id="adReopen" class="adreopen hidden" aria-label="عرض الإعلانات">📢</button>
 
 <main>
   <section id="home" class="hero">
@@ -297,12 +337,10 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/fireba
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-/* 🔑 تطبيق مسمّى: جلسة زوار مستقلة تماماً عن جلسة الإدارة على نفس النطاق */
 const app  = initializeApp(firebaseConfig, 'hyber-public');
 const db   = getFirestore(app);
 const auth = getAuth(app);
 
-/* دخول مجهول تلقائي بصمةً للإعجابات (مطابق لقواعد likes) */
 let authUid = null, authPromise = null;
 function ensureAuth(){
   if(!authPromise){
@@ -324,8 +362,8 @@ const esc = s => (s||"").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&
 let toastT; function toast(m){ const el=$('#toast'); el.textContent=m; el.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>el.classList.remove('show'),2600); }
 
 const I18N = {
-  ar:{navHome:"الرئيسية",navBrowse:"تصفح المنتجات",navAbout:"عن المعرض",navContact:"تواصل معنا",heroCta:"تصفح المنتجات",productsTitle:"المعدات الجاهزة",aboutTitle:"عن المعرض",contactTitle:"تواصل معنا",dlPdf:"تحميل PDF عالي الدقة",order:"طلب عبر واتساب",call:"اتصال",details:"التفاصيل",all:"الكل",noRes:"لا توجد نتائج مطابقة",searchPh:"ابحث عن منتج...",addr:"العنوان",ph:"الهاتف",em:"البريد الإلكتروني",wa:"واتساب",prep:"جارٍ تحضير ملف PDF عالي الدقة...",done:"تم تحميل الملف بنجاح",err:"حدث خطأ أثناء التحميل",specs:"المواصفات",visit:"زورونا في المعرض",newPosts:"منشورات جديدة",likedBefore:"❤️ أعجبك هذا المنتج مسبقاً",likeFail:"تعذر تسجيل الإعجاب",noNotif:"لا توجد تنبيهات جديدة"},
-  en:{navHome:"Home",navBrowse:"Browse",navAbout:"About",navContact:"Contact",heroCta:"Browse Products",productsTitle:"Ready Made Sets",aboutTitle:"About Us",contactTitle:"Contact Us",dlPdf:"Download Hi-Res PDF",order:"Order on WhatsApp",call:"Call",details:"Details",all:"All",noRes:"No matching results",searchPh:"Search products...",addr:"Address",ph:"Phone",em:"Email",wa:"WhatsApp",prep:"Preparing hi-res PDF...",done:"File downloaded successfully",err:"An error occurred",specs:"Specifications",visit:"Visit our showroom",newPosts:"New posts",likedBefore:"❤️ You already liked this",likeFail:"Could not register like",noNotif:"No new notifications"}
+  ar:{navHome:"الرئيسية",navBrowse:"تصفح المنتجات",navAbout:"عن المعرض",navContact:"تواصل معنا",heroCta:"تصفح المنتجات",productsTitle:"المعدات الجاهزة",aboutTitle:"عن المعرض",contactTitle:"تواصل معنا",dlPdf:"تحميل PDF عالي الدقة",order:"طلب عبر واتساب",call:"اتصال",details:"التفاصيل",all:"الكل",noRes:"لا توجد نتائج مطابقة",searchPh:"ابحث عن منتج...",addr:"العنوان",ph:"الهاتف",em:"البريد الإلكتروني",wa:"واتساب",prep:"جارٍ تحضير ملف PDF عالي الدقة...",done:"تم تحميل الملف بنجاح",err:"حدث خطأ أثناء التحميل",specs:"المواصفات",visit:"زورونا في المعرض",newPosts:"منشورات جديدة",likedBefore:"❤️ أعجبك هذا المنتج مسبقاً",likeFail:"تعذر تسجيل الإعجاب",noNotif:"لا توجد تنبيهات جديدة",adCta:"التفاصيل"},
+  en:{navHome:"Home",navBrowse:"Browse",navAbout:"About",navContact:"Contact",heroCta:"Browse Products",productsTitle:"Ready Made Sets",aboutTitle:"About Us",contactTitle:"Contact Us",dlPdf:"Download Hi-Res PDF",order:"Order on WhatsApp",call:"Call",details:"Details",all:"All",noRes:"No matching results",searchPh:"Search products...",addr:"Address",ph:"Phone",em:"Email",wa:"WhatsApp",prep:"Preparing hi-res PDF...",done:"File downloaded successfully",err:"An error occurred",specs:"Specifications",visit:"Visit our showroom",newPosts:"New posts",likedBefore:"❤️ You already liked this",likeFail:"Could not register like",noNotif:"No new notifications",adCta:"Details"}
 };
 let LANG = localStorage.getItem('lang') || 'ar';
 const t = k => (I18N[LANG] && I18N[LANG][k]) || I18N.ar[k] || k;
@@ -345,7 +383,7 @@ const DEF = {storeNameAr:"حلوم للمفروشات",storeNameEn:"Halloom Furn
  contact:{phone:"",whatsapp:"",email:"",addressAr:"",addressEn:"",mapEmbed:"",facebook:"",instagram:"",twitter:"",youtube:""}};
 const S = { settings:{...DEF}, products:[], likes:{}, ads:[], filter:"all", search:"", current:null, newIds:[] };
 const mediaCache = {};
-let firstProdLoad = true, adIdx = 0, adTimer = null;
+let firstProdLoad = true;
 
 const features = () => { const f=S.settings.features||{}; return {likes:f.likes!==false, newAlerts:f.newAlerts!==false, vibration:f.vibration!==false, ads:f.ads!==false}; };
 const vibrate = p => { if(features().vibration && navigator.vibrate) navigator.vibrate(p); };
@@ -356,6 +394,7 @@ function applyLang(){
   $$('[data-i18n]').forEach(el => el.textContent = t(el.dataset.i18n));
   $('#langBtn').textContent = LANG==='ar' ? 'EN' : 'عربي';
   $('#searchInput').placeholder = t('searchPh');
+  $('#adCta').textContent = t('adCta');
 }
 $('#langBtn').onclick = () => { LANG = LANG==='ar' ? 'en' : 'ar'; localStorage.setItem('lang',LANG); applyLang(); applySettings(); renderProducts(); };
 
@@ -412,21 +451,58 @@ function buildContact(c){
   mb.innerHTML = src.startsWith('http') ? `<iframe src="${esc(src)}" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>` : `<div class="ph">${t('visit')}</div>`;
 }
 
+/* ===== محرك الإعلانات التفاعلي ===== */
+const AD_MS = 6000;
+let adTimer=null, adIdx=0, adPaused=false;
 function startAdBar(){
   clearInterval(adTimer);
-  const bar=$('#adBar');
-  if(!features().ads || !S.ads.length){ bar.classList.add('hidden'); return; }
-  bar.classList.remove('hidden'); adIdx=0; showAd();
-  if(S.ads.length>1) adTimer=setInterval(()=>{ adIdx=(adIdx+1)%S.ads.length; showAd(); },7000);
+  const wrap=$('#adWrap'), re=$('#adReopen');
+  if(!features().ads || !S.ads.length){ wrap.classList.add('hidden'); re.classList.add('hidden'); return; }
+  if(!wrap.classList.contains('closed')) wrap.classList.remove('hidden');
+  buildAdDots(); adIdx=0; showAd();
+  adTimer=setInterval(()=>{ if(!adPaused) goAd((adIdx+1)%S.ads.length); }, AD_MS);
+}
+function buildAdDots(){
+  $('#adDots').innerHTML=S.ads.map((_,i)=>`<button data-i="${i}" aria-label="إعلان ${i+1}"></button>`).join('');
+  $$('#adDots button').forEach(b=>b.onclick=e=>{ e.stopPropagation(); goAd(+b.dataset.i); });
 }
 function showAd(){
   const a=S.ads[adIdx]; if(!a) return;
-  const el=$('#adTxt');
-  el.textContent='📢 '+pick(a,'textAr','textEn');
-  el.style.animation='none'; void el.offsetWidth; el.style.animation='';
-  el.onclick = ()=>{ if(a.link) window.open(a.link,'_blank'); };
-  el.style.cursor = a.link ? 'pointer' : 'default';
+  const txt=$('#adTxt');
+  txt.textContent=pick(a,'textAr','textEn');
+  txt.classList.remove('swap'); void txt.offsetWidth; txt.classList.add('swap');
+  $$('#adDots button').forEach((b,j)=>b.classList.toggle('on',j===adIdx));
+  $('#adCta').classList.toggle('hidden',!a.link);
+  const pi=$('#adProgI'); pi.style.animation='none'; void pi.offsetWidth; pi.style.animation='';
 }
+function goAd(i){ adIdx=i; showAd(); }
+function setAdPause(p){ adPaused=p; $('#adCard').classList.toggle('paused',p); }
+$('#adCard').onclick=e=>{
+  if(e.target.closest('.adclose')||e.target.closest('.addots')||e.target.closest('.adcta')) return;
+  const a=S.ads[adIdx]; if(a&&a.link) window.open(a.link,'_blank');
+};
+$('#adCta').onclick=e=>{ e.stopPropagation(); const a=S.ads[adIdx]; if(a&&a.link) window.open(a.link,'_blank'); };
+$('#adClose').onclick=e=>{
+  e.stopPropagation();
+  clearInterval(adTimer);
+  $('#adWrap').classList.add('hidden','closed');
+  $('#adReopen').classList.remove('hidden');
+};
+$('#adReopen').onclick=()=>{
+  $('#adReopen').classList.add('hidden');
+  $('#adWrap').classList.remove('hidden','closed');
+  startAdBar();
+};
+let adTx=null;
+$('#adCard').addEventListener('touchstart',e=>{ adTx=e.touches[0].clientX; setAdPause(true); },{passive:true});
+$('#adCard').addEventListener('touchend',e=>{
+  setAdPause(false);
+  if(adTx==null||!S.ads.length) return;
+  const dx=e.changedTouches[0].clientX-adTx; adTx=null;
+  if(Math.abs(dx)>40){ dx<0 ? goAd((adIdx+1)%S.ads.length) : goAd((adIdx-1+S.ads.length)%S.ads.length); }
+},{passive:true});
+$('#adCard').addEventListener('mouseenter',()=>setAdPause(true));
+$('#adCard').addEventListener('mouseleave',()=>setAdPause(false));
 
 async function getMedia(pid){
   if(mediaCache[pid]) return mediaCache[pid];
