@@ -294,13 +294,28 @@ const firebaseConfig = {
   appId: "1:432784656900:web:7cab72f4ed807aacb44351"
 };
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
-import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
 const app = initializeApp(firebaseConfig);
 const db  = getFirestore(app);
 const auth = getAuth(app);
-onAuthStateChanged(auth, u => { if(!u) signInAnonymously(auth).catch(console.error); });
+
+/* ---------- دخول مجهول تلقائي (ليعمل الإعجاب مع القواعد الصارمة) ---------- */
+let authUid = null, authPromise = null;
+function ensureAuth(){
+  if(!authPromise){
+    authPromise = (async()=>{
+      try{
+        if(auth.currentUser) authUid = auth.currentUser.uid;
+        else { const c = await signInAnonymously(auth); authUid = c.user.uid; }
+      }catch(e){ console.warn('anon auth:', e); }
+      return authUid;
+    })();
+  }
+  return authPromise;
+}
+ensureAuth();
 
 const $  = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -333,7 +348,6 @@ let firstProdLoad = true, adIdx = 0, adTimer = null;
 
 const features = () => { const f=S.settings.features||{}; return {likes:f.likes!==false, newAlerts:f.newAlerts!==false, vibration:f.vibration!==false, ads:f.ads!==false}; };
 const vibrate = p => { if(features().vibration && navigator.vibrate) navigator.vibrate(p); };
-const deviceUid = () => { let u=localStorage.getItem('deviceUid'); if(!u){ u='d'+Math.random().toString(36).slice(2,10)+Date.now().toString(36); localStorage.setItem('deviceUid',u); } return u; };
 
 function applyLang(){
   document.documentElement.lang = LANG;
@@ -423,22 +437,17 @@ onSnapshot(query(collection(db,'media'), where('productId','==','hero')), snap=>
   buildSlider(snap.docs.map(d=>d.data()).sort((a,b)=>(a.order||0)-(b.order||0)).map(x=>x.dataUrl));
 }, err=>console.error(err));
 
+/* ---------- الإعجابات: بصمة الزائر = UID مجهول من Firebase (مطابق لقواعدك) ---------- */
 async function doLike(id, btnEl){
   if(!features().likes) return;
   if(localStorage.getItem('liked_'+id)){ toast(t('likedBefore')); return; }
-  const uid = auth.currentUser?.uid;
+  const uid = await ensureAuth();
   if(!uid){ toast(t('likeFail')); return; }
-  const ref = doc(db,'likes',id);
+  const ref=doc(db,'likes',id);
   try{
-    const s = await getDoc(ref);
-    if(s.exists()){
-      if(s.data().voters && s.data().voters[uid]){
-        localStorage.setItem('liked_'+id,'1'); toast(t('likedBefore')); return;
-      }
-      await updateDoc(ref,{count:(s.data().count||0)+1, ['voters.'+uid]:true});
-    } else {
-      await setDoc(ref,{count:1,voters:{[uid]:true}});
-    }
+    const s=await getDoc(ref);
+    if(s.exists()) await updateDoc(ref,{count:(s.data().count||0)+1, ['voters.'+uid]:true});
+    else await setDoc(ref,{count:1,voters:{[uid]:true}});
     localStorage.setItem('liked_'+id,'1');
     vibrate(40);
     if(btnEl){ btnEl.classList.add('pop','liked'); setTimeout(()=>btnEl.classList.remove('pop'),500); }
@@ -625,7 +634,7 @@ onSnapshot(query(collection(db,'products'), where('published','==',true)), snap=
     if(nw.length) showNewAlert(nw);
   }
   S.products=list; renderProducts();
-}, err=>{ console.error(err); toast('⚠️ تعذّر تحميل المنتجات'); });
+}, err=>console.error(err));
 
 applyLang();
 </script>
