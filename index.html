@@ -44,7 +44,6 @@ img{max-width:100%;display:block}
 .searchbar input{width:100%;padding:11px 18px;border-radius:999px;border:1.5px solid #e2ddd2;font-family:var(--font);font-size:14px;outline:none;transition:.25s}
 .searchbar input:focus{border-color:var(--pri);box-shadow:0 0 0 4px var(--tint)}
 @media(min-width:900px){.topnav{display:flex}#menuBtn{display:none}}
-/* تبويبات حقيقية: كل قسم شاشة مستقلة */
 .tabsec{display:none}
 .tabsec.on{display:block;animation:tabin .45s ease}
 @keyframes tabin{from{opacity:0;transform:translateY(14px)}}
@@ -75,7 +74,7 @@ img{max-width:100%;display:block}
 @keyframes ring{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5),0 10px 26px rgba(0,0,0,.3)}70%{box-shadow:0 0 0 14px rgba(255,255,255,0),0 10px 26px rgba(0,0,0,.3)}100%{box-shadow:0 0 0 0 rgba(255,255,255,0),0 10px 26px rgba(0,0,0,.3)}}
 @media(min-width:900px){.adreopen{bottom:30px}}
 @media(max-width:560px){.adtext{font-size:13px}.adicon{font-size:26px}}
-.hero{position:relative;height:min(66vh,560px);min-height:400px;overflow:hidden;background:var(--prd)}
+.hero{position:relative;height:min(62vh,520px);min-height:380px;overflow:hidden;background:var(--prd)}
 .hs{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;background-size:cover;background-position:center}
 .hs.on{opacity:1}
 .hs.ph{background:linear-gradient(135deg,var(--prd),var(--pri))}
@@ -90,6 +89,16 @@ img{max-width:100%;display:block}
 .dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
 .dot{width:8px;height:8px;border-radius:50%;background:#ffffff80;cursor:pointer;transition:.3s;border:0;padding:0}
 .dot.on{background:var(--acl);width:24px;border-radius:99px}
+/* بطاقات الرئيسية المزخرفة */
+.hcards{width:min(1120px,92%);margin:-48px auto 30px;position:relative;z-index:6;display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:700px){.hcards{grid-template-columns:1fr 1fr}}
+.hcard{background:#fff;border-radius:18px;padding:20px 16px 16px;box-shadow:0 14px 34px rgba(0,0,0,.14);position:relative;overflow:hidden;text-align:center;transition:transform .3s,box-shadow .3s}
+.hcard:hover{transform:translateY(-5px);box-shadow:0 20px 44px rgba(0,0,0,.18)}
+.hcard::before{content:'';position:absolute;top:0;inset-inline:0;height:4px;background:linear-gradient(90deg,var(--pri),var(--acl),var(--pri))}
+.hcard::after{content:'۞';position:absolute;top:10px;inset-inline-end:12px;color:var(--acl);opacity:.55;font-size:14px}
+.hicon{width:52px;height:52px;margin:0 auto 10px;border-radius:50%;background:linear-gradient(135deg,var(--acl),var(--pri));display:grid;place-items:center;font-size:24px;box-shadow:0 8px 18px rgba(0,0,0,.22)}
+.hcard h3{font-size:15px;color:var(--prd);margin-bottom:6px;font-weight:800}
+.hcard p{font-size:13px;color:#374151;line-height:1.9;white-space:pre-wrap}
 .section{padding:56px 0}
 .section.alt{background:#fff}
 .sec-title{font-size:clamp(20px,3vw,28px);margin-bottom:20px;position:relative;padding-bottom:10px}
@@ -133,7 +142,7 @@ img{max-width:100%;display:block}
 @media(min-width:900px){.two{grid-template-columns:1fr 1fr}}
 .clist{list-style:none;display:flex;flex-direction:column;gap:12px;margin:16px 0}
 .clitem{display:flex;gap:12px;align-items:center;background:#fff;padding:12px 14px;border-radius:12px;box-shadow:var(--sh);transition:.25s;text-decoration:none;color:inherit}
-.clitem:hover{transform:translateX(-4px);border-color:var(--pri)}
+.clitem:hover{transform:translateX(-4px)}
 [dir="ltr"] .clitem:hover{transform:translateX(4px)}
 .clitem .ic{width:40px;height:40px;border-radius:10px;background:var(--tint);color:var(--pri);display:grid;place-items:center;flex:none}
 .clitem b{display:block;font-size:13px}.clitem span{font-size:13px;color:var(--mut)}
@@ -142,12 +151,9 @@ img{max-width:100%;display:block}
 .soc:hover{background:var(--prd);transform:translateY(-4px)}
 .mapbox iframe,.mapbox .ph{width:100%;height:320px;border:0;border-radius:var(--rad);box-shadow:var(--sh)}
 .mapbox .ph{display:grid;place-items:center;background:var(--tint);color:var(--mut)}
-.footer{background:linear-gradient(135deg,var(--pri),var(--prd));color:#fff;padding:28px 0 90px}
-@media(min-width:900px){.footer{padding-bottom:28px}}
-.fnav{display:flex;justify-content:center;gap:6px;flex-wrap:wrap}
-.fnav a{color:#ffffffcc;padding:8px 16px;border-radius:999px;text-decoration:none;font-weight:700;transition:.25s;cursor:pointer}
-.fnav a.active,.fnav a:hover{background:#ffffff22;color:#fff}
-.fsocials{display:flex;justify-content:center;gap:10px;margin:16px 0 10px}
+.footer{background:linear-gradient(135deg,var(--pri),var(--prd));color:#fff;padding:24px 0 90px}
+@media(min-width:900px){.footer{padding-bottom:24px}}
+.fsocials{display:flex;justify-content:center;gap:10px;margin:0 0 10px}
 .fsocials .soc{background:#ffffff22}
 .fsocials .soc:hover{background:#fff;color:var(--pri)}
 .copy{text-align:center;font-size:12px;color:#ffffffaa}
@@ -159,25 +165,25 @@ img{max-width:100%;display:block}
 .newpill{position:fixed;bottom:86px;inset-inline-start:14px;z-index:70;background:linear-gradient(135deg,var(--acl),var(--pri));color:#fff;border:0;border-radius:999px;padding:11px 20px;font-weight:700;font-family:var(--font);font-size:14px;box-shadow:0 10px 26px rgba(0,0,0,.28);display:flex;gap:8px;align-items:center;animation:slidein .5s;cursor:pointer}
 @keyframes slidein{from{transform:translateY(24px);opacity:0}}
 @media(min-width:900px){.newpill{bottom:30px}}
-/* الإسفنجة الصغيرة الجذابة */
-.sponge{position:fixed;left:12px;bottom:84px;z-index:75;width:56px;height:42px;border:0;cursor:pointer;border-radius:10px;background:radial-gradient(circle at 20% 30%,#d9a406 3.5px,transparent 4.5px),radial-gradient(circle at 55% 20%,#d9a406 3px,transparent 4px),radial-gradient(circle at 78% 45%,#d9a406 3.5px,transparent 4.5px),radial-gradient(circle at 34% 66%,#d9a406 3px,transparent 4px),radial-gradient(circle at 64% 76%,#d9a406 3.5px,transparent 4.5px),linear-gradient(180deg,#ffd21f 0%,#ffc400 70%,#e6a800 100%);box-shadow:0 8px 20px rgba(230,168,0,.45), inset 0 -4px 0 rgba(0,0,0,.12);animation:bob 2.4s ease-in-out infinite;transition:transform .2s}
-.sponge:hover{transform:scale(1.12)}
-@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-5px) rotate(2deg)}}
-@media(min-width:900px){.sponge{bottom:30px}}
-.spbubble{position:fixed;left:76px;bottom:104px;z-index:75;background:#fff;border:1.5px solid var(--acl);color:var(--prd);border-radius:14px;border-start-start-radius:4px;padding:7px 12px;font-weight:800;font-size:12.5px;box-shadow:var(--sh);animation:pop .3s;max-width:200px}
-@media(min-width:900px){.spbubble{bottom:48px}}
-.spchat{position:fixed;left:12px;bottom:134px;z-index:76;width:min(320px,calc(100vw - 24px));height:min(440px,60vh);background:#fff;border-radius:18px;box-shadow:0 30px 80px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;animation:pop .3s}
-@media(min-width:900px){.spchat{bottom:82px}}
-.sphead{background:linear-gradient(135deg,#ffd21f,#e6a800);color:#5d3a17;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:14px}
-.sphead .icon-btn{color:#5d3a17;width:32px;height:32px}
-.spmsgs{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
-.msg{max-width:88%;padding:9px 12px;border-radius:14px;font-size:13px;line-height:1.8;animation:rise .3s;white-space:pre-wrap}
+/* الإسفنجة الصغيرة */
+.sponge{position:fixed;left:10px;bottom:80px;z-index:75;width:44px;height:34px;border:0;cursor:pointer;border-radius:9px;background:radial-gradient(circle at 22% 32%,#d9a406 2.6px,transparent 3.4px),radial-gradient(circle at 56% 22%,#d9a406 2.2px,transparent 3px),radial-gradient(circle at 78% 48%,#d9a406 2.6px,transparent 3.4px),radial-gradient(circle at 36% 68%,#d9a406 2.2px,transparent 3px),radial-gradient(circle at 66% 78%,#d9a406 2.6px,transparent 3.4px),linear-gradient(180deg,#ffd21f 0%,#ffc400 70%,#e6a800 100%);box-shadow:0 6px 16px rgba(230,168,0,.5), inset 0 -3px 0 rgba(0,0,0,.12);animation:bob 2.4s ease-in-out infinite;transition:transform .2s}
+.sponge:hover{transform:scale(1.15)}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-4px) rotate(2deg)}}
+@media(min-width:900px){.sponge{bottom:26px}}
+.spbubble{position:fixed;left:60px;bottom:96px;z-index:75;background:#fff;border:1.5px solid var(--acl);color:var(--prd);border-radius:12px;border-start-start-radius:4px;padding:6px 10px;font-weight:800;font-size:12px;box-shadow:var(--sh);animation:pop .3s;max-width:180px}
+@media(min-width:900px){.spbubble{bottom:42px}}
+.spchat{position:fixed;left:10px;bottom:120px;z-index:76;width:min(300px,calc(100vw - 20px));height:min(420px,58vh);background:#fff;border-radius:16px;box-shadow:0 30px 80px rgba(0,0,0,.35);display:flex;flex-direction:column;overflow:hidden;animation:pop .3s}
+@media(min-width:900px){.spchat{bottom:64px}}
+.sphead{background:linear-gradient(135deg,#ffd21f,#e6a800);color:#5d3a17;padding:9px 12px;display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:13px}
+.sphead .icon-btn{color:#5d3a17;width:30px;height:30px}
+.spmsgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--bg)}
+.msg{max-width:88%;padding:8px 11px;border-radius:14px;font-size:12.5px;line-height:1.8;animation:rise .3s;white-space:pre-wrap}
 .msg.bot{background:#fff;border:1.5px solid #eee;align-self:flex-start}
 .msg.user{background:linear-gradient(135deg,var(--acl),var(--pri));color:#fff;align-self:flex-end}
 .qwrap{display:flex;flex-wrap:wrap;gap:6px;align-self:stretch}
-.qchip{background:#fff;border:1.5px solid var(--acl);color:var(--prd);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--font)}
+.qchip{background:#fff;border:1.5px solid var(--acl);color:var(--prd);border-radius:999px;padding:6px 11px;font-size:11.5px;font-weight:700;cursor:pointer;transition:.2s;font-family:var(--font)}
 .qchip:hover{background:var(--tint);transform:translateY(-2px)}
-.spfoot{padding:8px;border-top:1px solid #eee;display:flex;gap:6px;background:#fff}
+.spfoot{padding:7px;border-top:1px solid #eee;display:flex;gap:6px;background:#fff}
 .cursor::after{content:'▌';animation:blink 1s infinite}
 @keyframes blink{50%{opacity:0}}
 .modal{position:fixed;inset:0;z-index:100;display:none}
@@ -269,7 +275,7 @@ img{max-width:100%;display:block}
 <header class="topbar">
   <div class="wrap bar">
     <button id="menuBtn" class="icon-btn" aria-label="القائمة"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
-    <a class="brand" href="#home" data-sec="home">
+    <a class="brand" data-sec="home">
       <svg width="40" height="40" viewBox="0 0 64 64"><defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="var(--acl)"/><stop offset="1" stop-color="var(--pri)"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#lg1)"/><path d="M21 16v32M43 16v32M21 32h22" stroke="#fff" stroke-width="6" stroke-linecap="round"/><circle cx="50" cy="16" r="4" fill="#fff"/></svg>
       <div><b id="brandName">حلوم للمفروشات</b><span id="brandTag">Halloom Furniture</span></div>
     </a>
@@ -305,14 +311,17 @@ img{max-width:100%;display:block}
 </div>
 <button id="adReopen" class="adreopen hidden" aria-label="عرض الإعلانات">📢</button>
 <main>
-  <section id="home" class="hero tabsec on">
-    <div id="heroSlider"></div>
-    <div class="hero-ov">
-      <h1 id="heroTitle">حلوم للمفروشات - أصالة وجمال</h1>
-      <p id="heroSub"></p>
-      <a class="btn" data-sec="browse">تصفح المنتجات</a>
+  <section id="home" class="tabsec on">
+    <div class="hero">
+      <div id="heroSlider"></div>
+      <div class="hero-ov">
+        <h1 id="heroTitle">حلوم للمفروشات - أصالة وجمال</h1>
+        <p id="heroSub"></p>
+        <a class="btn" data-sec="browse">تصفح المنتجات</a>
+      </div>
+      <div class="dots" id="heroDots"></div>
     </div>
-    <div class="dots" id="heroDots"></div>
+    <div class="hcards hidden" id="hCards"></div>
   </section>
   <section id="browse" class="section tabsec">
     <div class="wrap">
@@ -340,12 +349,6 @@ img{max-width:100%;display:block}
 </main>
 <footer class="footer">
   <div class="wrap">
-    <nav class="fnav">
-      <a data-sec="home">الرئيسية</a>
-      <a data-sec="browse">تصفح المنتجات</a>
-      <a data-sec="about">عن المعرض</a>
-      <a data-sec="contact">تواصل معنا</a>
-    </nav>
     <div class="fsocials" id="fsocials"></div>
     <div class="copy"><span id="copyName"></span> · H-yber Management © 2026</div>
   </div>
@@ -447,7 +450,7 @@ function setFont(f){
 }
 const DEF = {storeNameAr:"حلوم للمفروشات",storeNameEn:"Halloom Furniture",taglineAr:"أصالة وجمال",taglineEn:"Authenticity & Beauty",
  heroTitleAr:"حلوم للمفروشات - أصالة وجمال",heroTitleEn:"Halloom Furniture - Authenticity & Beauty",aboutAr:"",aboutEn:"",
- font:"Cairo",theme:"brown",layout:{mode:"grid",cols:2},
+ font:"Cairo",theme:"brown",layout:{mode:"grid",cols:2},homeCards:[],
  features:{likes:true,newAlerts:true,vibration:true,ads:true,bot:true},
  contact:{phone:"",whatsapp:"",email:"",addressAr:"",addressEn:"",mapEmbed:"",facebook:"",instagram:"",twitter:"",youtube:""}};
 const S = { settings:{...DEF}, products:[], likes:{}, ads:[], botQs:[], filter:"all", search:"", current:null, newIds:[] };
@@ -456,7 +459,6 @@ let firstProdLoad = true;
 const features = () => { const f=S.settings.features||{}; return {likes:f.likes!==false, newAlerts:f.newAlerts!==false, vibration:f.vibration!==false, ads:f.ads!==false, bot:f.bot!==false}; };
 const vibrate = p => { if(features().vibration && navigator.vibrate) navigator.vibrate(p); };
 const imgOf = p => validThumb(p.thumb) ? p.thumb : ((mediaCache[p.id] && mediaCache[p.id][0]) || '');
-/* ===== نظام التبويبات الحقيقي ===== */
 function goTab(sec){
   ['home','browse','about','contact'].forEach(s=>{ const el=document.getElementById(s); if(el) el.classList.toggle('on', s===sec); });
   $$('[data-sec]').forEach(a=>a.classList.toggle('active', a.dataset.sec===sec));
@@ -489,11 +491,20 @@ function applySettings(){
   $('#sponge').classList.toggle('hidden', !f.bot);
   if(!f.bot){ $('#spChat').classList.add('hidden'); $('#spBubble').classList.add('hidden'); }
   buildContact(st.contact||{});
+  renderHomeCards();
   const L = st.layout||{mode:'grid',cols:2};
   const g = $('#grid');
   g.classList.remove('cols-1','cols-2','cols-3','mode-row');
   g.classList.add(L.mode==='row' ? 'mode-row' : ('cols-'+(L.cols||2)));
   startAdBar();
+}
+function renderHomeCards(){
+  const cards=(S.settings.homeCards||[]).filter(c=>c && c.active!==false);
+  const w=$('#hCards');
+  if(!cards.length){ w.innerHTML=''; w.classList.add('hidden'); return; }
+  w.classList.remove('hidden');
+  w.innerHTML=cards.map(c=>`<div class="hcard reveal"><div class="hicon">${esc(c.icon||'✨')}</div><h3>${esc(pick(c,'titleAr','titleEn'))}</h3><p>${esc(pick(c,'textAr','textEn'))}</p></div>`).join('');
+  observeReveals();
 }
 function buildSlider(imgs){
   clearInterval(slideTimer); slideIdx=0;
@@ -513,7 +524,6 @@ function buildSlider(imgs){
   if(list.length>1) slideTimer=setInterval(()=>goS((slideIdx+1)%list.length),5000);
 }
 const SOC_ICONS={facebook:'<path d="M14 8h3V4h-3a5 5 0 0 0-5 5v3H6v4h3v8h4v-8h3l1-4h-4V9a1 1 0 0 1 1-1z"/>',instagram:'<rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.3"/>',twitter:'<path d="M22 5.8c-.7.3-1.5.6-2.3.7a4 4 0 0 0 1.8-2.2c-.8.5-1.7.8-2.6 1a4 4 0 0 0-6.9 3.6A11.4 11.4 0 0 1 3.7 4.7a4 4 0 0 0 1.2 5.3c-.6 0-1.3-.2-1.8-.5v.1a4 4 0 0 0 3.2 3.9 4 4 0 0 1-1.8.1 4 4 0 0 0 3.7 2.8A8 8 0 0 1 2 18.1a11.3 11.3 0 0 0 6.1 1.8c7.4 0 11.4-6.1 11.4-11.4v-.5c.8-.6 1.5-1.3 2-2.2z"/>',youtube:'<path d="M22 12s0-3.3-.4-4.9a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.3a2.5 2.5 0 0 0-1.8 1.8C2 8.7 2 12 2 12s0 3.3.4 4.9a2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.3a2.5 2.5 0 0 0 1.8-1.8c.4-1.6.4-4.9.4-4.9zM10 15V9l5.2 3z"/>'};
-/* ===== تواصل متعدد الأرقام مع روابط مباشرة ===== */
 const splitNums = v => (v||'').split(/[\n,،;/]+/).map(s=>s.trim()).filter(Boolean);
 function buildContact(c){
   const items=[];
@@ -850,7 +860,7 @@ $('#searchInput').oninput=e=>{ S.search=e.target.value; renderProducts(); };
 $('#menuBtn').onclick=()=>$('#topnav').classList.toggle('open');
 $('#grid').innerHTML = Array(4).fill('<div class="skel reveal in"><div class="i"></div><div class="b"></div></div>').join('');
 onSnapshot(doc(db,'settings','site'), snap=>{
-  S.settings = snap.exists() ? {...DEF, ...snap.data(), contact:{...DEF.contact,...(snap.data().contact||{})}, layout:{...DEF.layout,...(snap.data().layout||{})}, features:{...DEF.features,...(snap.data().features||{})}} : {...DEF};
+  S.settings = snap.exists() ? {...DEF, ...snap.data(), contact:{...DEF.contact,...(snap.data().contact||{})}, layout:{...DEF.layout,...(snap.data().layout||{})}, features:{...DEF.features,...(snap.data().features||{})}, homeCards:Array.isArray(snap.data().homeCards)?snap.data().homeCards:[]} : {...DEF};
   applySettings(); renderProducts();
 }, err=>console.error(err));
 onSnapshot(query(collection(db,'products'), where('published','==',true)), snap=>{
